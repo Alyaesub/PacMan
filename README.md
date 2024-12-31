@@ -1,0 +1,1 @@
+exercice de création d'un mini jeux pacman pour appliquer du JS
