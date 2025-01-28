@@ -1,0 +1,14 @@
+#game {
+    width: 560px;
+    height: 560px;
+    background-color: blue;
+    display: flex;/*ce display gére les div a l'interieur de la div game*/
+    flex-wrap: wrap;
+}
+
+/*Css pour les div (les 0,1,2,3,4) crée en JS*/
+#game div {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+}
