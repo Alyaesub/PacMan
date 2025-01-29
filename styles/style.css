@@ -1,7 +1,6 @@
 #game {
     width: 560px;
     height: 560px;
-    background-color: blue;
     display: flex;/*ce display gére les div a l'interieur de la div game*/
     flex-wrap: wrap;
 }
@@ -10,5 +9,25 @@
 #game div {
     width: 20px;
     height: 20px;
-    background-color: white;
+}
+
+#game div.pac-dots { /* classe css pour les div "pac-dots" créer en JS*/
+    background-color: rgb(212, 65, 21);
+    border-radius: 50%;
+}
+
+#game div.mur { /* classe css pour les div "mur" créer en JS*/
+    background-color: blue;
+}
+
+#game div.ghost-lair { /* classe css pour les div "ghost aera" créer en JS*/
+    background-color: wheat;
+}
+
+#game div.power-pellet { /* classe css pour les div "power-pallet" créer en JS*/
+    background-color: rgba(27, 119, 18, 0.87);
+}
+
+#game div.empty { /* classe css pour les div "ampty" créer en JS*/
+    background-color:"";
 }

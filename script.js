@@ -59,7 +59,27 @@ function creerPlateau() {
 	//pour chacunne d'elle (les cases, les chiffres) avec le forEach
 	layout.forEach((caseLayout) => {
 		let casePlateau = document.createElement("div"); // on crée les div ici avec creatElement
-		casePlateau.innerHTML = caseLayout;
+		//le switch "en fonction" du case layout donc du chiffre
+		switch (caseLayout) {
+			//pour layout 0 (points)
+			case 0:
+				casePlateau.classList.add("pac-dots");
+				break;
+			//pour case layout 1 (murs)
+			case 1:
+				casePlateau.classList.add("mur"); // on ajoute la classe "murs" a toute les div des cases 1
+				break;
+			case 2:
+				casePlateau.classList.add("ghost-lair");
+				break;
+			case 3:
+				casePlateau.classList.add("power-pellet");
+				break;
+			case 4:
+				casePlateau.classList.add("empty");
+				break;
+		}
+
 		gameDiv.appendChild(casePlateau); // on ajoute le let a tous les chil de gameDiv
 	});
 }
