@@ -13,7 +13,7 @@
 }
 
 #game div.pac-dots { /* classe css pour les div "pac-dots" créer en JS*/
-    background-color: rgb(248, 172, 9);
+    background-color: rgb(216, 135, 14);
     border-radius: 50%;
     box-sizing: border-box;/*methode css qui fait des bordure sans changer la taille de l'élément*/
     border: black solid 6px;/*et on rajoute border en white pour réduir le point*/
@@ -28,12 +28,20 @@
 }
 
 #game div.power-pellet { /* classe css pour les div "power-pallet" créer en JS*/
-    background-color: rgba(40, 185, 27, 0.87);
+    background-color: rgba(47, 211, 32, 0.87);
     border-radius: 50%;
     box-sizing: border-box;/*methode css qui fait des bordure sans changer la taille de l'élément*/
-    border: black solid 2px;/
+    border: black solid 4px;/
 }
 
 #game div.empty { /* classe css pour les div "ampty" créer en JS*/
     background-color:"";
+}
+
+
+#game div.pacman {
+    background-color:yellow;
+    border-radius: 50%;
+    box-sizing: border-box;/*methode css qui fait des bordure sans changer la taille de l'élément*/
+    border: black solid 1px;/
 }
