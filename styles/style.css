@@ -3,6 +3,7 @@
     height: 560px;
     display: flex;/*ce display gére les div a l'interieur de la div game*/
     flex-wrap: wrap;
+    background-color: black;
 }
 
 /*Css pour les div (les 0,1,2,3,4) crée en JS*/
@@ -12,20 +13,25 @@
 }
 
 #game div.pac-dots { /* classe css pour les div "pac-dots" créer en JS*/
-    background-color: rgb(212, 65, 21);
+    background-color: rgb(248, 172, 9);
     border-radius: 50%;
+    box-sizing: border-box;/*methode css qui fait des bordure sans changer la taille de l'élément*/
+    border: black solid 6px;/*et on rajoute border en white pour réduir le point*/
 }
 
 #game div.mur { /* classe css pour les div "mur" créer en JS*/
-    background-color: blue;
+    background-color: rgb(30, 30, 243);
 }
 
 #game div.ghost-lair { /* classe css pour les div "ghost aera" créer en JS*/
-    background-color: wheat;
+    background-color: gray;
 }
 
 #game div.power-pellet { /* classe css pour les div "power-pallet" créer en JS*/
-    background-color: rgba(27, 119, 18, 0.87);
+    background-color: rgba(40, 185, 27, 0.87);
+    border-radius: 50%;
+    box-sizing: border-box;/*methode css qui fait des bordure sans changer la taille de l'élément*/
+    border: black solid 2px;/
 }
 
 #game div.empty { /* classe css pour les div "ampty" créer en JS*/
