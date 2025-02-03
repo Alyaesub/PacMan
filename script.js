@@ -81,7 +81,7 @@ function creerPlateau() {
 				break;
 		}
 
-		gameDiv.appendChild(casePlateau); // on ajoute le let a tous les chil de gameDiv
+		gameDiv.appendChild(casePlateau); // on ajoute le let a tous les child de gameDiv
 		cptCase++; //incrément le compteur pour les chiffres des cases
 	});
 	///// on crée le pacman et lui donne le point de spawn ////
@@ -98,3 +98,24 @@ function getCaseByIndex(index) {
 
 //appelle la fonction pour créer le plateau
 creerPlateau();
+
+//on utilise keyup pour recupere les touche sur les quel l'utilisateur appuis pour faire les mouvement du pacman
+document.addEventListener("keyup", (e) => {
+	console.log("keyup : " + e.key);
+	let pacManDiv = document.querySelector(".pacman");
+	let pacManCase = pacManDiv.dataset.numerocase;
+	switch (e.key) {
+		case "ArrowUp":
+			//déplace PM de 1 vers le haut
+			break;
+		case "ArrowRight":
+			//déplace PM de 1 vers la droite
+			pacManDiv.classList.remove("pacman");
+			getCaseByIndex(parseInt(pacManCase) + 1).classList.add("pacman");
+			break;
+		case "ArrowLeft":
+		case "ArrowDown":
+		default:
+			break;
+	}
+});
