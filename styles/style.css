@@ -40,6 +40,13 @@ h1 {
     background-color: gray;
 }
 
+#game div.ghost {
+    background-color: red;
+    border-radius: 35%;
+    border: black solid 3px;
+    box-sizing: border-box;
+}
+
 #game div.power-pellet { /* classe css pour les div "power-pallet" créer en JS*/
     background-color: rgba(47, 211, 32, 0.87);
     border-radius: 50%;

@@ -88,10 +88,10 @@ function creerPlateau() {
 		gameDiv.appendChild(casePlateau); // on ajoute le let a tous les child de gameDiv
 		cptCase++; //incrément le compteur pour les chiffres des cases
 	});
-	///// on crée le pacman et lui donne le point de spawn ////
-	// let caseGame = document.querySelector('[data-numerocase="489"]');
-	// caseGame.classList.add("pacman");
+	///// on appelle la fonction qui crée le pacman et lui donne le point de spawn ////
 	getCaseByIndex(489).classList.add("pacman");
+	//on appell la fonction qui crée les ghost
+	generGhost();
 }
 
 //// crée une fonction qui permettra de return une case une case depuis l'index//////
@@ -168,4 +168,24 @@ function incrementScore() {
 	if (score == 234) {
 		alert("T'a gagné BG");
 	}
+}
+// Fonction qui crée les Ghost
+function generGhost() {
+	//permet de generé des ghost en évitant de spawn sur les autres (ghost-lair;not(.ghost))
+	for (let i = 0; i < 4; i++) {
+		let casePotentialForGhost = document.querySelectorAll(
+			".ghost-lair:not(.ghost)"
+		);
+		//parmis les case dispo 1 est selct au hasard
+		let caseForGhost =
+			casePotentialForGhost[
+				getRandomNumber(casePotentialForGhost.length)
+			];
+		//ajout de la classe ghost au ghost
+		caseForGhost.classList.add("ghost");
+	}
+}
+//fonction de creation au hasard du spawn
+function getRandomNumber(max) {
+	return Math.floor(Math.random() * max);
 }
