@@ -92,16 +92,19 @@ function creerPlateau() {
 	getCaseByIndex(489).classList.add("pacman");
 	//on appell la fonction qui crée les ghost
 	generGhost();
+
+	//deplacement aléatoir des guost
+	setInterval(moovGhost, 1000); // appell la fonction moovghost et l'apllique toutes les seconde ce qui fait avancer les ghost
 }
+
+//appelle la fonction pour créer le plateau
+creerPlateau();
 
 //// crée une fonction qui permettra de return une case une case depuis l'index//////
 function getCaseByIndex(index) {
 	let caseGame = document.querySelector(`[data-numerocase="${index}"]`);
 	return caseGame;
 }
-
-//appelle la fonction pour créer le plateau
-creerPlateau();
 
 //on utilise keyup pour recupere les touche sur les quel l'utilisateur appuis pour faire les mouvement du pacman
 document.addEventListener("keyup", (e) => {
@@ -189,3 +192,87 @@ function generGhost() {
 function getRandomNumber(max) {
 	return Math.floor(Math.random() * max);
 }
+
+function moovGhost() {
+	let allGhost = document.querySelectorAll(".ghost");
+	allGhost.forEach((ghost) => {
+		let direction = getRandomNumber(4);
+		let ghostCaseId = ghost.dataset.numerocase;
+		let caseDestination = null;
+
+		switch (direction) {
+			case 1:
+				caseDestination = getNumberCaseDestination(
+					ghostCaseId,
+					directions.Haut
+				);
+				break;
+			case 2:
+				caseDestination = getNumberCaseDestination(
+					ghostCaseId,
+					directions.Bas
+				);
+				break;
+			case 3:
+				caseDestination = getNumberCaseDestination(
+					ghostCaseId,
+					directions.Droite
+				);
+				break;
+			case 4:
+				caseDestination = getNumberCaseDestination(
+					ghostCaseId,
+					directions.Gauche
+				);
+				break;
+		}
+
+		if (caseDestination && !caseDestination.classList.contains("mur")) {
+			// Vérifie que la case destination existe et n'est pas un mur
+			ghost.classList.remove("ghost"); // Supprime la classe de la case actuelle
+			caseDestination.classList.add("ghost"); // Ajoute la classe à la nouvelle case
+			ghost.dataset.numerocase = caseDestination.dataset.numerocase; // Met à jour la position du ghost
+		}
+	});
+}
+
+const direction = {
+	Haut: 1,
+	Bas: 2,
+	Droite: 3,
+	Gauche: 4,
+};
+
+function getNumberCaseDestination(caseActuel, direction) {
+	let caseDestination = null;
+	switch (
+		direction // Comparaison avec des chaînes de caractères
+	) {
+		case "Haut":
+			caseDestination = getCaseByIndex(
+				parseInt(caseActuel) - sizeCaseWidth
+			);
+			break;
+		case "Droite":
+			caseDestination = getCaseByIndex(parseInt(caseActuel) + 1);
+			break;
+		case "Gauche":
+			caseDestination = getCaseByIndex(parseInt(caseActuel) - 1);
+			break;
+		case "Bas":
+			caseDestination = getCaseByIndex(
+				parseInt(caseActuel) + sizeCaseWidth
+			);
+			break;
+		default:
+			console.error("Direction invalide :", direction);
+			break;
+	}
+	return caseDestination;
+}
+const directions = {
+	Haut: "Haut",
+	Bas: "Bas",
+	Droite: "Droite",
+	Gauche: "Gauche",
+};
