@@ -53,6 +53,7 @@ const layout = [
 // 4 - empty
 
 const gameDiv = document.getElementById("game");
+const sizeCaseWidth = 28;
 
 function creerPlateau() {
 	let cptCase = 0; // va servire a donner un chiffre unique a chaque case du plateau
@@ -101,12 +102,19 @@ creerPlateau();
 
 //on utilise keyup pour recupere les touche sur les quel l'utilisateur appuis pour faire les mouvement du pacman
 document.addEventListener("keyup", (e) => {
-	console.log("keyup : " + e.key);
+	DeplacePacMan(e.key); // et on appelle la fonction dans l'event listener
+});
+//on crée la fonction pour le deplacement
+function DeplacePacMan(direction) {
 	let pacManDiv = document.querySelector(".pacman");
 	let pacManCase = pacManDiv.dataset.numerocase;
-	switch (e.key) {
+	switch (direction) {
 		case "ArrowUp":
 			//déplace PM de 1 vers le haut
+			pacManDiv.classList.remove("pacman");
+			getCaseByIndex(parseInt(pacManCase) - sizeCaseWidth).classList.add(
+				"pacman"
+			);
 			break;
 		case "ArrowRight":
 			//déplace PM de 1 vers la droite
@@ -114,8 +122,17 @@ document.addEventListener("keyup", (e) => {
 			getCaseByIndex(parseInt(pacManCase) + 1).classList.add("pacman");
 			break;
 		case "ArrowLeft":
+			//déplace PM de 1 vers la gauche
+			pacManDiv.classList.remove("pacman");
+			getCaseByIndex(parseInt(pacManCase) - 1).classList.add("pacman");
+			break;
 		case "ArrowDown":
+			pacManDiv.classList.remove("pacman");
+			getCaseByIndex(parseInt(pacManCase) + sizeCaseWidth).classList.add(
+				"pacman"
+			);
+			break;
 		default:
 			break;
 	}
-});
+}
