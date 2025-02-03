@@ -108,31 +108,45 @@ document.addEventListener("keyup", (e) => {
 function DeplacePacMan(direction) {
 	let pacManDiv = document.querySelector(".pacman");
 	let pacManCase = pacManDiv.dataset.numerocase;
+	let caseDestination = null; // on met en null pour simplifier et pour le valoriser que si besoin
 	switch (direction) {
 		case "ArrowUp":
 			//déplace PM de 1 vers le haut
-			pacManDiv.classList.remove("pacman");
-			getCaseByIndex(parseInt(pacManCase) - sizeCaseWidth).classList.add(
-				"pacman"
+			caseDestination = getCaseByIndex(
+				parseInt(pacManCase) - sizeCaseWidth
 			);
 			break;
 		case "ArrowRight":
 			//déplace PM de 1 vers la droite
-			pacManDiv.classList.remove("pacman");
-			getCaseByIndex(parseInt(pacManCase) + 1).classList.add("pacman");
+			caseDestination = getCaseByIndex(parseInt(pacManCase) + 1);
 			break;
 		case "ArrowLeft":
 			//déplace PM de 1 vers la gauche
-			pacManDiv.classList.remove("pacman");
-			getCaseByIndex(parseInt(pacManCase) - 1).classList.add("pacman");
+			caseDestination = getCaseByIndex(parseInt(pacManCase) - 1);
 			break;
 		case "ArrowDown":
-			pacManDiv.classList.remove("pacman");
-			getCaseByIndex(parseInt(pacManCase) + sizeCaseWidth).classList.add(
-				"pacman"
+			caseDestination = getCaseByIndex(
+				parseInt(pacManCase) + sizeCaseWidth
 			);
 			break;
 		default:
 			break;
+	}
+	if (caseDestination != null) {
+		if (checkDirection(caseDestination)) {
+			caseDestination.classList.add("pacman");
+			pacManDiv.classList.remove("pacman");
+		}
+	}
+}
+
+//function utiliser pour bloque PM avec les murs
+//return false quand tu peux pas avancer
+//return true si ces possible
+function checkDirection(caseDestination) {
+	if (caseDestination.classList.contains("mur")) {
+		return false;
+	} else {
+		return true;
 	}
 }
