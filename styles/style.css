@@ -1,9 +1,22 @@
+body {
+    background-color: black;
+}
+
+h1 {
+    color: white;
+}
+
+#score {
+    color: white;
+    text-align: center;
+}
+
 #game {
     width: 560px;
     height: 560px;
     display: flex;/*ce display gére les div a l'interieur de la div game*/
     flex-wrap: wrap;
-    background-color: black;
+    margin: auto;
 }
 
 /*Css pour les div (les 0,1,2,3,4) crée en JS*/

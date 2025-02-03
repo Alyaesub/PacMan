@@ -2,14 +2,14 @@ console.log("test");
 
 /*
 OK Créer le plateau (dynamique)
-* Créer notre pacman
-* Gérer ses déplacements (sans contrainte)
-* Contraintes de déplacement (pas dans les murs)
-* Pièces à manger
+OK Créer notre pacman
+OK Gérer ses déplacements (sans contrainte)
+OK Contraintes de déplacement (pas dans les murs)
+OK Pièces à manger
 * Générer les fantômes
-    Déplacer les fantômes : Moyen, en aléatoire, déplacement pas top
-    Gérer collision pacman et un fantome
-    Gérer les power-pellet (un mode ou pacman peut manger un fantome)
+* Déplacer les fantômes : Moyen, en aléatoire, déplacement pas top
+* Gérer collision pacman et un fantome
+* Gérer les power-pellet (un mode ou pacman peut manger un fantome)
 */
 
 const layout = [
@@ -54,9 +54,12 @@ const layout = [
 
 const gameDiv = document.getElementById("game");
 const sizeCaseWidth = 28;
+const scoreHtml = document.getElementById("score");
+let score = 0;
 
 function creerPlateau() {
 	let cptCase = 0; // va servire a donner un chiffre unique a chaque case du plateau
+	scoreHtml.innerHTML = `mon score : ${score}`; // add de la ligne score direct le innerhtml
 	//pour chacunne d'elle (les cases, les chiffres) avec le forEach
 	layout.forEach((caseLayout) => {
 		let casePlateau = document.createElement("div"); // on crée les div ici avec creatElement
@@ -132,7 +135,9 @@ function DeplacePacMan(direction) {
 		default:
 			break;
 	}
+	//si inverse a null
 	if (caseDestination != null) {
+		//si cse destination dans checkoutdirection est true, alors fair add et remove
 		if (checkDirection(caseDestination)) {
 			caseDestination.classList.add("pacman");
 			pacManDiv.classList.remove("pacman");
@@ -143,10 +148,24 @@ function DeplacePacMan(direction) {
 //function utiliser pour bloque PM avec les murs
 //return false quand tu peux pas avancer
 //return true si ces possible
+//if pour compter les points et les incrementer
 function checkDirection(caseDestination) {
 	if (caseDestination.classList.contains("mur")) {
 		return false;
 	} else {
+		if (caseDestination.classList.contains("pac-dots")) {
+			incrementScore();
+			caseDestination.classList.remove("pac-dots");
+		}
 		return true;
+	}
+}
+
+//fonction qui permet d'incrémenter le score
+function incrementScore() {
+	score++;
+	scoreHtml.innerHTML = `mon score : ${score}`;
+	if (score == 234) {
+		alert("T'a gagné BG");
 	}
 }
