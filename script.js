@@ -149,9 +149,10 @@ function DeplacePacMan(direction) {
 	//si inverse a null
 	if (caseDestination != null) {
 		//si cse destination dans checkoutdirection est true, alors fair add et remove
-		if (checkDirection(caseDestination)) {
+		if (checkDirectionMur(caseDestination)) {
 			caseDestination.classList.add("pacman");
 			pacManDiv.classList.remove("pacman");
+			checkPointEating(caseDestination);
 		}
 	}
 }
@@ -160,15 +161,18 @@ function DeplacePacMan(direction) {
 //return false quand tu peux pas avancer
 //return true si ces possible
 //if pour compter les points et les incrementer
-function checkDirection(caseDestination) {
+function checkDirectionMur(caseDestination) {
 	if (caseDestination.classList.contains("mur")) {
 		return false;
 	} else {
-		if (caseDestination.classList.contains("pac-dots")) {
-			incrementScore();
-			caseDestination.classList.remove("pac-dots");
-		}
 		return true;
+	}
+}
+
+function checkPointEating(caseDestination) {
+	if (caseDestination.classList.contains("pac-dots")) {
+		incrementScore();
+		caseDestination.classList.remove("pac-dots");
 	}
 }
 
@@ -243,13 +247,6 @@ function moovGhost() {
 		}
 	});
 }
-
-const direction = {
-	Haut: 1,
-	Bas: 2,
-	Droite: 3,
-	Gauche: 4,
-};
 
 function getNumberCaseDestination(caseActuel, direction) {
 	let caseDestination = null;
