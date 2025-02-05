@@ -94,7 +94,7 @@ function creerPlateau() {
 	generGhost();
 
 	//deplacement aléatoir des guost
-	setInterval(moovGhost, 1000); // appell la fonction moovghost et l'apllique toutes les seconde ce qui fait avancer les ghost
+	setInterval(moovGhost, 500); // appell la fonction moovghost et l'apllique toutes les seconde ce qui fait avancer les ghost
 }
 
 //appelle la fonction pour créer le plateau
@@ -169,6 +169,14 @@ function checkDirectionMur(caseDestination) {
 	}
 }
 
+function checkGhostCollision(caseDestination) {
+	if (caseDestination.classList.contains("ghost")) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
 function checkPointEating(caseDestination) {
 	if (caseDestination.classList.contains("pac-dots")) {
 		incrementScore();
@@ -210,36 +218,36 @@ function moovGhost() {
 	allGhost.forEach((ghost) => {
 		let direction = getRandomNumber(4);
 		let ghostCaseId = ghost.dataset.numerocase;
-		let caseDestination = null;
-
 		switch (direction) {
-			case 1:
+			case 0:
 				caseDestination = getNumberCaseDestination(
 					ghostCaseId,
 					directions.Haut
 				);
 				break;
-			case 2:
+			case 1:
 				caseDestination = getNumberCaseDestination(
 					ghostCaseId,
 					directions.Bas
 				);
 				break;
-			case 3:
+			case 2:
 				caseDestination = getNumberCaseDestination(
 					ghostCaseId,
 					directions.Droite
 				);
 				break;
-			case 4:
+			case 3:
 				caseDestination = getNumberCaseDestination(
 					ghostCaseId,
 					directions.Gauche
 				);
 				break;
 		}
-
-		if (caseDestination && !caseDestination.classList.contains("mur")) {
+		if (
+			checkGhostCollision(caseDestination) &&
+			checkDirectionMur(caseDestination)
+		) {
 			// Vérifie que la case destination existe et n'est pas un mur
 			ghost.classList.remove("ghost"); // Supprime la classe de la case actuelle
 			caseDestination.classList.add("ghost"); // Ajoute la classe à la nouvelle case
