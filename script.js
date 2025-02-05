@@ -218,6 +218,7 @@ function moovGhost() {
 	allGhost.forEach((ghost) => {
 		let direction = getRandomNumber(4);
 		let ghostCaseId = ghost.dataset.numerocase;
+		let caseDestination = null;
 		switch (direction) {
 			case 0:
 				caseDestination = getNumberCaseDestination(
@@ -245,6 +246,7 @@ function moovGhost() {
 				break;
 		}
 		if (
+			caseDestination &&
 			checkGhostCollision(caseDestination) &&
 			checkDirectionMur(caseDestination)
 		) {
