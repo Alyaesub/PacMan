@@ -118,21 +118,29 @@ function DeplacePacMan(direction) {
 	switch (direction) {
 		case "ArrowUp":
 			//déplace PM de 1 vers le haut
-			caseDestination = getCaseByIndex(
-				parseInt(pacManCase) - sizeCaseWidth
+			caseDestination = getNumberCaseDestination(
+				pacManCase,
+				directions.Haut
 			);
 			break;
 		case "ArrowRight":
 			//déplace PM de 1 vers la droite
-			caseDestination = getCaseByIndex(parseInt(pacManCase) + 1);
+			caseDestination = getNumberCaseDestination(
+				pacManCase,
+				directions.Droite
+			);
 			break;
 		case "ArrowLeft":
 			//déplace PM de 1 vers la gauche
-			caseDestination = getCaseByIndex(parseInt(pacManCase) - 1);
+			caseDestination = getNumberCaseDestination(
+				pacManCase,
+				directions.Gauche
+			);
 			break;
 		case "ArrowDown":
-			caseDestination = getCaseByIndex(
-				parseInt(pacManCase) + sizeCaseWidth
+			caseDestination = getNumberCaseDestination(
+				pacManCase,
+				directions.Bas
 			);
 			break;
 		default:
