@@ -6,7 +6,7 @@ OK Créer notre pacman
 OK Gérer ses déplacements (sans contrainte)
 OK Contraintes de déplacement (pas dans les murs)
 OK Pièces à manger
-* Générer les fantômes
+OK Générer les fantômes
 * Déplacer les fantômes : Moyen, en aléatoire, déplacement pas top
 * Gérer collision pacman et un fantome
 * Gérer les power-pellet (un mode ou pacman peut manger un fantome)
@@ -218,7 +218,10 @@ function moovGhost() {
 	allGhost.forEach((ghost) => {
 		let direction = getRandomNumber(4);
 		let ghostCaseId = ghost.dataset.numerocase;
+		let previousDirection = ghost.dataset.previousDirection;
 		let caseDestination = null;
+
+		console.log(direction);
 		switch (direction) {
 			case 0:
 				caseDestination = getNumberCaseDestination(
@@ -252,10 +255,39 @@ function moovGhost() {
 		) {
 			// Vérifie que la case destination existe et n'est pas un mur
 			ghost.classList.remove("ghost"); // Supprime la classe de la case actuelle
+			ghost.removeAttribute("data-previous-direction");
 			caseDestination.classList.add("ghost"); // Ajoute la classe à la nouvelle case
+			caseDestination.dataset.previousDirection = direction;
 			ghost.dataset.numerocase = caseDestination.dataset.numerocase; // Met à jour la position du ghost
 		}
 	});
+}
+
+let canMove = false;
+function checkGhostNoGoBack(previousDirection, direction) {
+	switch (previousDirection) {
+		case 0:
+			if (direction != 1) {
+				canMove = true;
+			}
+			break;
+		case 1:
+			if (direction != 0) {
+				canMove = true;
+			}
+			break;
+		case 2:
+			if (direction != 3) {
+				canMove = true;
+			}
+			break;
+		case 3:
+			if (direction != 2) {
+				canMove = true;
+			}
+			break;
+	}
+	return canMove;
 }
 
 function getNumberCaseDestination(caseActuel, direction) {
