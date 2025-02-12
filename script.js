@@ -221,7 +221,7 @@ function moovGhost() {
 		let previousDirection = ghost.dataset.previousDirection;
 		let caseDestination = null;
 
-		console.log(direction);
+		// console.log(direction);
 		switch (direction) {
 			case 0:
 				caseDestination = getNumberCaseDestination(
@@ -251,7 +251,8 @@ function moovGhost() {
 		if (
 			caseDestination &&
 			checkGhostCollision(caseDestination) &&
-			checkDirectionMur(caseDestination)
+			checkDirectionMur(caseDestination) &&
+			checkGhostNoGoBack(previousDirection, direction)
 		) {
 			// Vérifie que la case destination existe et n'est pas un mur
 			ghost.classList.remove("ghost"); // Supprime la classe de la case actuelle
@@ -266,26 +267,28 @@ function moovGhost() {
 let canMove = false;
 function checkGhostNoGoBack(previousDirection, direction) {
 	switch (previousDirection) {
-		case 0:
-			if (direction != 1) {
+		case direction.Haut:
+			if (direction != direction.Bas) {
 				canMove = true;
 			}
 			break;
-		case 1:
-			if (direction != 0) {
+		case direction.Bas:
+			if (direction != direction.Haut) {
 				canMove = true;
 			}
 			break;
-		case 2:
-			if (direction != 3) {
+		case direction.Gauche:
+			if (direction != direction.Droite) {
 				canMove = true;
 			}
 			break;
-		case 3:
-			if (direction != 2) {
+		case direction.Droite:
+			if (direction != direction.Gauche) {
 				canMove = true;
 			}
 			break;
+		default:
+			canMove = true;
 	}
 	return canMove;
 }
