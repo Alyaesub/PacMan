@@ -213,58 +213,126 @@ function getRandomNumber(max) {
 	return Math.floor(Math.random() * max);
 }
 
+const directions = {
+	Haut: "Haut",
+	Bas: "Bas",
+	Droite: "Droite",
+	Gauche: "Gauche",
+};
+
 function moovGhost() {
 	let allGhost = document.querySelectorAll(".ghost");
 	allGhost.forEach((ghost) => {
-		let direction = getRandomNumber(4);
+		// let direction = getRandomNumber(4);
 		let ghostCaseId = ghost.dataset.numerocase;
 		let previousDirection = ghost.dataset.previousDirection;
 		let caseDestination = null;
 
-		// console.log(direction);
-		switch (direction) {
-			case 0:
-				caseDestination = getNumberCaseDestination(
-					ghostCaseId,
-					directions.Haut
-				);
-				break;
-			case 1:
-				caseDestination = getNumberCaseDestination(
-					ghostCaseId,
-					directions.Bas
-				);
-				break;
-			case 2:
-				caseDestination = getNumberCaseDestination(
-					ghostCaseId,
-					directions.Droite
-				);
-				break;
-			case 3:
-				caseDestination = getNumberCaseDestination(
-					ghostCaseId,
-					directions.Gauche
-				);
-				break;
+		let allDirectionsPossibles = [
+			directions.Haut,
+			directions.Bas,
+			directions.Gauche,
+			directions.Droite,
+		];
+
+		let allGoodDirections = [];
+
+		allDirectionsPossibles.forEach((direction) => {
+			let isPossible = true;
+			let casePossible = getNumeroCaseDestination(
+				fantomeCaseId,
+				direction
+			);
+			if (!checkDirectionMur(casePossible)) {
+				isPossible = false;
+			}
+			if (CheckFantomeCollision(casePossible)) {
+				isPossible = false;
+			}
+
+			if (isPossible) {
+				allGoodDirections.push(direction);
+			}
+		});
+
+		if (allGoodDirections.length > 1) {
+			//Plusieurs direction possible, j'élimine celle qui ne va pas avec previous directrion
+			let previousDirection = fantome.dataset.previousDirection;
+
+			allGoodDirections.forEach((goodDirection) => {
+				if (
+					!CheckFantomeNotGoBack(
+						parseInt(previousDirection),
+						goodDirection
+					)
+				) {
+					const index = allGoodDirections.indexOf(goodDirection);
+					if (index > -1) {
+						// only splice array when item is found
+						allGoodDirections.splice(index, 1); // 2nd parameter means remove one item only
+					}
+				}
+			});
 		}
-		if (
-			caseDestination &&
-			checkGhostCollision(caseDestination) &&
-			checkDirectionMur(caseDestination) &&
-			checkGhostNoGoBack(previousDirection, direction)
-		) {
-			// Vérifie que la case destination existe et n'est pas un mur
-			ghost.classList.remove("ghost"); // Supprime la classe de la case actuelle
-			ghost.removeAttribute("data-previous-direction");
-			caseDestination.classList.add("ghost"); // Ajoute la classe à la nouvelle case
-			caseDestination.dataset.previousDirection = direction;
-			ghost.dataset.numerocase = caseDestination.dataset.numerocase; // Met à jour la position du ghost
-		}
+
+		//J'ai un tableau allGoodDirection, qui contiens toutes les bonnes directions possibles
+		//Il en faut une au hasard
+		let elementOfTable = getRandomNumber(allGoodDirections.length);
+		let direction = allGoodDirections[elementOfTable];
+		caseDestination = getNumeroCaseDestination(fantomeCaseId, direction);
+
+		fantome.classList.remove("fantome");
+		fantome.removeAttribute("data-previous-direction");
+		caseDestination.classList.add("fantome");
+		caseDestination.dataset.previousDirection = direction;
+		checkPacmanEatedByGhost(caseDestination);
+		goodDirectionFinded = true;
 	});
 }
+// 		// console.log(direction);
+// 		switch (direction) {
+// 			case 0:
+// 				caseDestination = getNumberCaseDestination(
+// 					ghostCaseId,
+// 					directions.Haut
+// 				);
+// 				break;
+// 			case 1:
+// 				caseDestination = getNumberCaseDestination(
+// 					ghostCaseId,
+// 					directions.Bas
+// 				);
+// 				break;
+// 			case 2:
+// 				caseDestination = getNumberCaseDestination(
+// 					ghostCaseId,
+// 					directions.Droite
+// 				);
+// 				break;
+// 			case 3:
+// 				caseDestination = getNumberCaseDestination(
+// 					ghostCaseId,
+// 					directions.Gauche
+// 				);
+// 				break;
+// 		}
+// 		if (
+// 			caseDestination &&
+// 			checkGhostCollision(caseDestination) &&
+// 			checkDirectionMur(caseDestination) &&
+// 			checkGhostNoGoBack(previousDirection, direction)
+// 		) {
+// 			// Vérifie que la case destination existe et n'est pas un mur
+// 			ghost.classList.remove("ghost"); // Supprime la classe de la case actuelle
+// 			ghost.removeAttribute("data-previous-direction");
+// 			caseDestination.classList.add("ghost"); // Ajoute la classe à la nouvelle case
+// 			caseDestination.dataset.previousDirection = direction;
+// 			ghost.dataset.numerocase = caseDestination.dataset.numerocase; // Met à jour la position du ghost
+// 		}
+// 	});
+// }
 
-let canMove = false;
+// let canMove = false;
 function checkGhostNoGoBack(previousDirection, direction) {
 	switch (previousDirection) {
 		case direction.Haut:
@@ -295,34 +363,42 @@ function checkGhostNoGoBack(previousDirection, direction) {
 
 function getNumberCaseDestination(caseActuel, direction) {
 	let caseDestination = null;
-	switch (
-		direction // Comparaison avec des chaînes de caractères
-	) {
-		case "Haut":
-			caseDestination = getCaseByIndex(
-				parseInt(caseActuel) - sizeCaseWidth
-			);
-			break;
-		case "Droite":
-			caseDestination = getCaseByIndex(parseInt(caseActuel) + 1);
-			break;
-		case "Gauche":
-			caseDestination = getCaseByIndex(parseInt(caseActuel) - 1);
-			break;
-		case "Bas":
-			caseDestination = getCaseByIndex(
-				parseInt(caseActuel) + sizeCaseWidth
-			);
-			break;
-		default:
-			console.error("Direction invalide :", direction);
-			break;
+	let directionInt = parseInt(direction);
+	let caseActuelleInt = parseInt(caseActuelle);
+	if (caseActuelleInt == 364 && direction == directions.Gauche) {
+		caseDestination = getCaseByIndex(caseActuelleInt + 27);
+	} else if (caseActuelleInt == 391 && direction == directions.Droite) {
+		caseDestination = getCaseByIndex(caseActuelleInt - 27);
+	} else {
+		switch (
+			direction // Comparaison avec des chaînes de caractères
+		) {
+			case "Haut":
+				caseDestination = getCaseByIndex(
+					parseInt(caseActuel) - sizeCaseWidth
+				);
+				break;
+			case "Droite":
+				caseDestination = getCaseByIndex(parseInt(caseActuel) + 1);
+				break;
+			case "Gauche":
+				caseDestination = getCaseByIndex(parseInt(caseActuel) - 1);
+				break;
+			case "Bas":
+				caseDestination = getCaseByIndex(
+					parseInt(caseActuel) + sizeCaseWidth
+				);
+				break;
+			default:
+				console.error("Direction invalide :", direction);
+				break;
+		}
+		return caseDestination;
 	}
-	return caseDestination;
+	const directions = {
+		Haut: "Haut",
+		Bas: "Bas",
+		Droite: "Droite",
+		Gauche: "Gauche",
+	};
 }
-const directions = {
-	Haut: "Haut",
-	Bas: "Bas",
-	Droite: "Droite",
-	Gauche: "Gauche",
-};
